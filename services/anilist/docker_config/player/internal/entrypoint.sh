@@ -3,4 +3,4 @@
 set -e
 cd /app
 
-python3 app.py
+gunicorn --timeout 120 app:app --bind 0.0.0.0:5000 --worker-class sanic.worker.GunicornWorker
