@@ -1,0 +1,4 @@
+sanic
+aioredis
+httpx
+gunicorn

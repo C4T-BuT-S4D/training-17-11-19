@@ -11,6 +11,28 @@ services:
     env_file:
       - ./docker_config/postgres/env.env
       - ./docker_config/authentication/env.env
+    environment:
+      - PYTHONUNBUFFERED=1
+
+  player_internal:
+    build:
+      context: .
+      dockerfile: docker_config/player/internal/Dockerfile
+    volumes:
+      - ./docker_volumes/anime:/anime
+    environment:
+      - PYTHONUNBUFFERED=1
+
+  player_api:
+    build:
+      context: .
+      dockerfile: docker_config/player/api/Dockerfile
+    env_file:
+      - ./docker_config/postgres/env.env
+    volumes:
+      - ./docker_volumes/anime:/anime:ro
+    environment:
+      - PYTHONUNBUFFERED=1
 
   nginx:
     image: nginx:1.15.9-alpine
