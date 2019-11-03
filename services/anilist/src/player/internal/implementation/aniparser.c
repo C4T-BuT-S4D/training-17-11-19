@@ -61,7 +61,7 @@ Aniparser_parse(Aniparser *self) {
     char *buf = alloca(strlen(self->data));
     memcpy(buf, self->data, self->length);
 
-    PyObject *result = Py_BuildValue("s#", buf, self->length);
+    PyObject *result = Py_BuildValue("y#", buf, self->length);
     return result;
 }
 
