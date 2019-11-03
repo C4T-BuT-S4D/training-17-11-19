@@ -25,7 +25,7 @@ def get_frame(prefix, number):
     except FileNotFoundError:
         return number, ''
     ani = aniparser.Aniparser(data, fname)
-    return number, base64.b64encode(ani.parse().encode())
+    return number, base64.b64encode(ani.parse())
 
 
 @app.route('/create/', methods=['POST'])
