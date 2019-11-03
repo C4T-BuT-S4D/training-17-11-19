@@ -1,5 +1,7 @@
 FROM pomomondreganto/aniparser:latest
 
+RUN apk add make
+
 ADD src/player/internal/requirements.txt /requirements.txt
 RUN pip3 install -r /requirements.txt
 
