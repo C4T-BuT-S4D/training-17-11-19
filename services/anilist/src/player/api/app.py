@@ -70,3 +70,7 @@ async def get_chunk(request):
         return json({'response': r.json()})
     except Exception as e:
         return json({'error': str(e)}, status=400)
+
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000, workers=4)

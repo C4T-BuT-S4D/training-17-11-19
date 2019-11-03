@@ -94,3 +94,7 @@ async def get(request):
     frames = map(lambda x: x[1], sorted(frames))
 
     return json(frames)
+
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000, workers=4)
