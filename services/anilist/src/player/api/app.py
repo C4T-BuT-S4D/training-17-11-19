@@ -32,7 +32,7 @@ async def upload_chunk(request, token):
         return json({'error': str(e)}, status=400)
 
 
-@app.route('/api/player/get_chunk/<token>/', methods=['POST'])
+@app.route('/api/player/get_chunk/<token>/', methods=['GET'])
 async def get_chunk(request, token):
     data = request.args
     start = int(data.get('start', 0))
@@ -46,6 +46,25 @@ async def get_chunk(request, token):
             params={
                 'start': start,
                 'end': end,
+            })
+    try:
+        return json({'response': r.json()})
+    except Exception as e:
+        return json({'error': str(e)}, status=400)
+
+
+@app.route('/api/player/parse_chunk/', methods=['POST'])
+async def get_chunk(request):
+    data = request.json
+    frames = data['frames']
+    if not all(frames):
+        return json({'error': 'empty frame'}, status=400)
+
+    async with httpx.AsyncClient() as client:
+        r = await client.post(
+            f'http://player_internal:5000/parse/',
+            json={
+                'frames': frames,
             })
     try:
         return json({'response': r.json()})

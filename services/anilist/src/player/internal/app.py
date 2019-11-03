@@ -24,7 +24,13 @@ def get_frame(prefix, number):
             data = f.read()
     except FileNotFoundError:
         return number, ''
-    ani = aniparser.Aniparser(data, fname)
+    else:
+        return number, base64.b64encode(data)
+
+
+def parse_frame(frame, number):
+    frame = base64.b64decode(frame.encode())
+    ani = aniparser.Aniparser(frame, '')
     return number, base64.b64encode(ani.parse())
 
 
@@ -62,6 +68,25 @@ async def get(request, prefix):
     tasks = [
         loop.run_in_executor(executor, get_frame, prefix, number)
         for number in range(r_start, r_end + 1)
+    ]
+
+    completed, _ = await asyncio.wait(tasks)
+    frames = [task.result() for task in completed]
+    frames = map(lambda x: x[1], sorted(frames))
+
+    return json(frames)
+
+
+@app.route('/parse/', methods=['POST'])
+async def get(request):
+    data = request.json
+    frames = data['frames']
+
+    loop = asyncio.get_event_loop()
+    executor = concurrent.futures.ThreadPoolExecutor(max_workers=5)
+    tasks = [
+        loop.run_in_executor(executor, parse_frame, frame, i)
+        for i, frame in enumerate(frames)
     ]
 
     completed, _ = await asyncio.wait(tasks)
