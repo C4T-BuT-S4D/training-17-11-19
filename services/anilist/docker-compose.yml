@@ -18,6 +18,7 @@ services:
     build:
       context: .
       dockerfile: docker_config/player/internal/Dockerfile
+    restart: on-failure
     volumes:
       - ./docker_volumes/anime:/anime
     environment:
