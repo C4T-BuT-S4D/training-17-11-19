@@ -4,6 +4,53 @@
 #include "structmember.h"
 
 const Py_ssize_t MAX_LEN = 10000;
+const Py_ssize_t MAX_DEN = 255;
+
+Py_ssize_t load(char *src, Py_ssize_t src_len, char* dst) {
+    Py_ssize_t dst_len = 0;
+    dst = malloc(MAX_DEN * src_len);
+    for (int i = 0; i < src_len; i += 2) {
+        for (char j = 0; j < src[i]; ++j) {
+            dst[dst_len++] = src[i + 1];
+        }
+    }
+    return dst_len;
+}
+
+void dump(char *data, Py_ssize_t length, FILE *fp) {
+    char *result = alloca(2 * length);
+
+    Py_ssize_t cnt = 0;
+    char cur_length = 0;
+    char cur_char = 0;
+
+    for (int i = 0; i < length; ++i) {
+        if (cur_length && data[i] == cur_char) {
+           ++cur_length;
+        } else if (!cur_length) {
+           cur_length = 1;
+           cur_char = data[i];
+        } else {
+           result[cnt++] = cur_length;
+           result[cnt++] = cur_char;
+           cur_length = 1;
+           cur_char = data[i];
+        }
+
+        if (cur_length == MAX_DEN) {
+           result[cnt++] = cur_length;
+           result[cnt++] = cur_char;
+           cur_length = 0;
+        }
+    }
+    if (cur_length) {
+        result[cnt++] = cur_length;
+        result[cnt++] = cur_char;
+    }
+
+    fwrite((char*)(&(cnt)), 1, sizeof(Py_ssize_t), fp);
+    fwrite(result, 1, cnt, fp);
+}
 
 typedef struct {
     PyObject_HEAD
@@ -61,7 +108,10 @@ Aniparser_parse(Aniparser *self) {
     char *buf = alloca(strlen(self->data));
     memcpy(buf, self->data, self->length);
 
-    PyObject *result = Py_BuildValue("y#", buf, self->length);
+    char* res = 0;
+    Py_ssize_t res_len = load(buf, self->length, res);
+
+    PyObject *result = Py_BuildValue("y#", res, res_len);
     return result;
 }
 
@@ -73,10 +123,9 @@ Aniparser_create(Aniparser *self) {
     if (!fp) {
         Py_RETURN_NONE;
     }
-    fwrite((char*)(&(self->length)), 1, sizeof(Py_ssize_t), fp);
-    fwrite(buf, 1, self->length, fp);
-    fclose(fp);
 
+    dump(buf, self->length, fp);
+    fclose(fp);
     Py_RETURN_NONE;
 }
 
