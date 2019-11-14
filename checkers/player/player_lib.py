@@ -1,5 +1,6 @@
 import base64
 import binascii
+import gzip
 import os
 import struct
 
@@ -80,10 +81,10 @@ class CheckMachine:
     def load_local_frames(video, numbers):
         result = []
         for num in numbers:
-            frame_name = str(num).zfill(5) + '.frame'
-            frame_path = os.path.join(BASE_DIR, 'frames', str(video), frame_name)
+            frame_name = str(num).zfill(5) + '.frame.gz'
+            frame_path = os.path.join(BASE_DIR, 'frames_compressed', str(video), frame_name)
             with open(frame_path, 'rb') as f:
-                data = f.read()
+                data = gzip.decompress(f.read())
             result.append(data)
         return result
 

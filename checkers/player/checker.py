@@ -39,9 +39,6 @@ def check(host):
     assert_eq(len(frames), len(parsed_frames), 'Invalid number of frames returned from parser')
 
     for i in range(len(frames)):
-        # print(frames[i][8:].decode())
-        # print('\n\n\n\n')
-        # print(parsed_frames[i].decode())
         assert_eq(len(frames[i][8:]), len(parsed_frames[i]), 'Invalid frame from parser')
         assert_eq(frames[i][8:], parsed_frames[i], 'Invalid frame from parser')
 
