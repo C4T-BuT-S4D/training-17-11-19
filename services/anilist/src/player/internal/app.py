@@ -35,9 +35,6 @@ def parse_frame(frame, number):
     if data is None:
         data = b''
 
-    if len(data) != 22511:
-        print('Got', data, 'from', frame)
-
     return number, base64.b64encode(data)
 
 

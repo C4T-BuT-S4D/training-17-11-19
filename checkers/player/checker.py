@@ -6,11 +6,51 @@ import sys
 from player_lib import *
 
 
-def put(host, flag_id, flag, vuln):
-    cquit(Status.OK, f'kek')
+def put(host, _flag_id, flag, _vuln):
+    mch = CheckMachine(host)
+
+    frames = list(map(mch.load_local_letter, flag))
+    username, password = mch.register_user()
+    sess = mch.login_user(username, password)
+    token = mch.upload_frames(sess, frames)
+
+    cquit(Status.OK, f'{username}:{password}:{token}')
 
 
-def get(host, flag_id, flag, vuln):
+def get(host, flag_id, flag, _vuln):
+    mch = CheckMachine(host)
+
+    username, password, token = flag_id.split(':')
+    sess = mch.login_user(username, password)
+
+    frames = list(map(mch.load_local_letter, flag))
+
+    returned_frames = mch.get_frames(sess, token, 0, len(frames) - 1)
+    assert_eq(
+        len(frames), len(returned_frames),
+        'Invalid number of frames returned',
+        status=Status.CORRUPT,
+    )
+
+    parsed_frames = mch.parse_frames(sess, returned_frames)
+    assert_eq(
+        len(frames), len(parsed_frames),
+        'Invalid number of frames returned from parser',
+        status=Status.CORRUPT,
+    )
+
+    for i in range(len(frames)):
+        assert_eq(
+            len(frames[i][8:]), len(parsed_frames[i]),
+            'Invalid frame from parser',
+            status=Status.CORRUPT,
+        )
+        assert_eq(
+            frames[i][8:], parsed_frames[i],
+            'Invalid frame from parser',
+            status=Status.CORRUPT,
+        )
+
     cquit(Status.OK)
 
 

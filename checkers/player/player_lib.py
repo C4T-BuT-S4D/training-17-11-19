@@ -88,6 +88,14 @@ class CheckMachine:
             result.append(data)
         return result
 
+    @staticmethod
+    def load_local_letter(letter):
+        frame_name = f'{letter}.frame'
+        frame_path = os.path.join(BASE_DIR, 'letters_frames', frame_name)
+        with open(frame_path, 'rb') as f:
+            data = f.read()
+        return data
+
     def upload_frames(self, sess, frames):
         blocks = [
             list(map(
