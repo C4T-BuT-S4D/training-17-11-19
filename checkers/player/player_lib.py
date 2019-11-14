@@ -90,7 +90,8 @@ class CheckMachine:
 
     @staticmethod
     def load_local_letter(letter):
-        frame_name = f'{letter}.frame'
+        name = base64.b64encode(letter.encode()).decode().replace('=', '')
+        frame_name = f'{name}.frame'
         frame_path = os.path.join(BASE_DIR, 'letters_frames', frame_name)
         with open(frame_path, 'rb') as f:
             data = f.read()
