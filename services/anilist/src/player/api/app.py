@@ -35,6 +35,12 @@ async def upload_chunk(request):
     r_start = data['start']
     frames = data['frames']
 
+    if not isinstance(frames, list):
+        abort(400)
+
+    if len(frames) > 30:
+        return json({'error': 'Too big chunk'}, status=400)
+
     await controllers.upload_exists_or_404(request, token)
 
     async with httpx.AsyncClient() as client:
@@ -57,16 +63,13 @@ async def get_chunk(request):
     data = request.args
     token = data.get('token', '')
 
-    if not token:
-        abort(400)
-
     await controllers.upload_exists_or_404(request, token)
 
     start = int(data.get('start', 0))
-    end = int(data.get('end', start + 5))
+    end = int(data.get('end', start + 30))
 
-    if end - start > 5:
-        end = start + 5
+    if end - start > 30:
+        end = start + 30
 
     async with httpx.AsyncClient() as client:
         r = await client.get(
@@ -83,11 +86,18 @@ async def get_chunk(request):
 
 @app.route('/api/player/parse_chunk/', methods=['POST'])
 @login_required
-async def get_chunk(request):
+async def parse_chunk(request):
     data = request.json
     frames = data['frames']
+
+    if not isinstance(frames, list):
+        abort(400)
+
     if not all(frames):
         return json({'error': 'empty frame'}, status=400)
+
+    if len(frames) > 30:
+        return json({'error': 'Too big chunk'}, status=400)
 
     async with httpx.AsyncClient() as client:
         r = await client.post(

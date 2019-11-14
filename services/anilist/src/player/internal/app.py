@@ -31,7 +31,14 @@ def get_frame(prefix, number):
 def parse_frame(frame, number):
     frame = base64.b64decode(frame.encode())
     ani = aniparser.Aniparser(frame, '')
-    return number, base64.b64encode(ani.parse())
+    data = ani.parse()
+    if data is None:
+        data = b''
+
+    if len(data) != 22511:
+        print('Got', data, 'from', frame)
+
+    return number, base64.b64encode(data)
 
 
 @app.route('/create/', methods=['POST'])
@@ -83,7 +90,7 @@ async def get(request):
     frames = data['frames']
 
     loop = asyncio.get_event_loop()
-    executor = concurrent.futures.ThreadPoolExecutor(max_workers=5)
+    executor = concurrent.futures.ThreadPoolExecutor(max_workers=1)
     tasks = [
         loop.run_in_executor(executor, parse_frame, frame, i)
         for i, frame in enumerate(frames)

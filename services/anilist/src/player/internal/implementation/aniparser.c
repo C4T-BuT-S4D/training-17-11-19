@@ -3,14 +3,13 @@
 #include <Python.h>
 #include "structmember.h"
 
-const Py_ssize_t MAX_LEN = 10000;
+const Py_ssize_t MAX_LEN = 100 * 1000;
 const Py_ssize_t MAX_DEN = 255;
 
-Py_ssize_t load(char *src, Py_ssize_t src_len, char* dst) {
+Py_ssize_t load(unsigned char *src, Py_ssize_t src_len, char* dst) {
     Py_ssize_t dst_len = 0;
-    dst = malloc(MAX_DEN * src_len);
-    for (int i = 0; i < src_len; i += 2) {
-        for (char j = 0; j < src[i]; ++j) {
+    for (Py_ssize_t i = 0; i < src_len; i += 2) {
+        for (unsigned char j = 0; j < src[i]; ++j) {
             dst[dst_len++] = src[i + 1];
         }
     }
@@ -79,6 +78,11 @@ Aniparser_init(Aniparser *self, PyObject *args) {
         return -1;
     }
 
+    if (len1 < 8) {
+        PyErr_SetString(PyExc_ValueError, "Data too short");
+        return NULL;
+    }
+
     self->data = malloc(len1 - 7);
     self->fname = malloc(len2 + 1);
 
@@ -105,10 +109,10 @@ static PyMemberDef Aniparser_members[] = {
 
 static PyObject *
 Aniparser_parse(Aniparser *self) {
-    char *buf = alloca(strlen(self->data));
+    unsigned char *buf = alloca(strlen(self->data));
     memcpy(buf, self->data, self->length);
 
-    char* res = 0;
+    char* res = malloc(MAX_DEN * self->length);
     Py_ssize_t res_len = load(buf, self->length, res);
 
     PyObject *result = Py_BuildValue("y#", res, res_len);
@@ -117,7 +121,7 @@ Aniparser_parse(Aniparser *self) {
 
 static PyObject *
 Aniparser_create(Aniparser *self) {
-    char *buf = alloca(strlen(self->data));
+    unsigned char *buf = alloca(strlen(self->data));
     memcpy(buf, self->data, strlen(self->data));
     FILE* fp = fopen(self->fname, "w");
     if (!fp) {
