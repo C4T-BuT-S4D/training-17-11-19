@@ -1,17 +1,13 @@
 <template>
   <div class="form">
     <b-form @submit.prevent="onSubmit">
-      <b-form-group
-              id="input-group-name"
-              label="Name:"
-              label-for="input-name"
-      >
+      <b-form-group id="input-group-name" label="Name:" label-for="input-name">
         <b-form-input
-                id="input-name"
-                placeholder="Enter name"
-                type="text"
-                required
-                v-model="name"
+          id="input-name"
+          placeholder="Enter name"
+          type="text"
+          required
+          v-model="name"
         ></b-form-input>
       </b-form-group>
       <b-form-group
@@ -39,7 +35,7 @@
 export default {
   data: function() {
     return {
-        name: "",
+      name: "",
       password: "",
       error: null
     };
@@ -47,7 +43,7 @@ export default {
   methods: {
     onSubmit: async function() {
       const user = {
-          name: this.name,
+        name: this.name,
         password: this.password
       };
       try {
