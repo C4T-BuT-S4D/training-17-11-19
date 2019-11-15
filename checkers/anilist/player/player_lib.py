@@ -49,19 +49,19 @@ class CheckMachine:
         return struct.pack('<Q', len(result)) + result
 
     def register_user(self):
-        username = rnd_username()
+        name = rnd_username()
         password = rnd_password()
         r = get_initialized_session().post(
             f'{self.url}/auth/register',
-            json={'username': username, 'password': password},
+            json={'name': name, 'password': password},
         )
         check_response(r, 'Could not register')
-        return username, password
+        return name, password
 
-    def login_user(self, username, password):
+    def login_user(self, name, password):
         sess = get_initialized_session()
 
-        r = sess.post(f'{self.url}/auth/login', json={'username': username, 'password': password})
+        r = sess.post(f'{self.url}/auth/login', json={'name': name, 'password': password})
         check_response(r, 'Could not login')
 
         return sess

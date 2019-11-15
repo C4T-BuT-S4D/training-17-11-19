@@ -49,7 +49,7 @@ async def create(request):
     os.makedirs(folder, exist_ok=True)
 
     loop = asyncio.get_event_loop()
-    executor = concurrent.futures.ThreadPoolExecutor(max_workers=5)
+    executor = concurrent.futures.ThreadPoolExecutor(max_workers=8)
     tasks = [
         loop.run_in_executor(executor, create_frame, prefix, start + i, frame)
         for i, frame in enumerate(frames)
@@ -67,7 +67,7 @@ async def get(request, prefix):
     r_end = int(data['end'][0])
 
     loop = asyncio.get_event_loop()
-    executor = concurrent.futures.ThreadPoolExecutor(max_workers=5)
+    executor = concurrent.futures.ThreadPoolExecutor(max_workers=8)
     tasks = [
         loop.run_in_executor(executor, get_frame, prefix, number)
         for number in range(r_start, r_end + 1)
@@ -86,7 +86,7 @@ async def get(request):
     frames = data['frames']
 
     loop = asyncio.get_event_loop()
-    executor = concurrent.futures.ThreadPoolExecutor(max_workers=1)
+    executor = concurrent.futures.ThreadPoolExecutor(max_workers=8)
     tasks = [
         loop.run_in_executor(executor, parse_frame, frame, i)
         for i, frame in enumerate(frames)

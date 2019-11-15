@@ -3,6 +3,8 @@
 import random
 import sys
 
+import requests
+
 from player_lib import *
 
 
@@ -10,18 +12,18 @@ def put(host, _flag_id, flag, _vuln):
     mch = CheckMachine(host)
 
     frames = list(map(mch.load_local_letter, flag))
-    username, password = mch.register_user()
-    sess = mch.login_user(username, password)
+    name, password = mch.register_user()
+    sess = mch.login_user(name, password)
     token = mch.upload_frames(sess, frames)
 
-    cquit(Status.OK, f'{username}:{password}:{token}')
+    cquit(Status.OK, f'{name}:{password}:{token}')
 
 
 def get(host, flag_id, flag, _vuln):
     mch = CheckMachine(host)
 
-    username, password, token = flag_id.split(':')
-    sess = mch.login_user(username, password)
+    name, password, token = flag_id.split(':')
+    sess = mch.login_user(name, password)
 
     frames = list(map(mch.load_local_letter, flag))
 
@@ -56,11 +58,11 @@ def get(host, flag_id, flag, _vuln):
 
 def check(host):
     mch = CheckMachine(host)
-    username, password = mch.register_user()
-    sess = mch.login_user(username, password)
+    name, password = mch.register_user()
+    sess = mch.login_user(name, password)
 
     me = mch.get_me(sess)
-    assert_eq(username, me['username'], 'Invalid "me" page')
+    assert_eq(name, me['name'], 'Invalid "me" page')
     assert_in('id', me, 'Invalid "me" page')
 
     video = random.randint(1, 10)
