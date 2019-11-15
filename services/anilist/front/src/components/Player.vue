@@ -1,7 +1,8 @@
 <template>
   <div id="player">
     <div>Player component (@pomo_mondreganto)</div>
-    <div>Anime token: {{ $route.params.token }}</div>
+    <div>Anime token: {{ animeToken }}</div>
+    <div>Anime name: {{ animeName }}</div>
     <div>
       <pre id="frame" :style="frameStyle">{{
         parsedFrames[this.currentFrame % this.firstEmpty]
@@ -14,7 +15,6 @@
 export default {
   methods: {
     showFrame() {
-      console.log("Current frame: ", this.currentFrame);
       this.currentFrame += 1;
       setTimeout(this.showFrame.bind(this), 100);
     },
@@ -61,7 +61,7 @@ export default {
     },
 
     loadFrames: async function(start, end) {
-      let token = this.$route.params.token;
+      let token = this.animeToken;
       try {
         const response = await this.$http.get(
           `/player/get_chunk/?token=${token}&start=${start}&end=${end}`
@@ -102,6 +102,20 @@ export default {
   },
 
   mounted: async function() {
+    this.animeToken = this.$route.params.token;
+
+    try {
+      const response = await this.$http.get(
+        `/player/info/?token=${this.animeToken}`
+      );
+      const {
+        data: { name }
+      } = response;
+      this.animeName = name;
+    } catch (e) {
+      void 0;
+    }
+
     this.loadVideo();
   },
 
@@ -110,7 +124,9 @@ export default {
       loadedFrames: {},
       parsedFrames: {},
       firstEmpty: 1000 * 1000 * 1000,
-      currentFrame: -1
+      currentFrame: -1,
+      animeName: "",
+      animeToken: ""
     };
   }
 };

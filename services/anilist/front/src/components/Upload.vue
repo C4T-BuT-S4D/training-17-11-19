@@ -2,6 +2,15 @@
   <div id="upload">
     <div>Upload component (@pomo_mondreganto)</div>
     <b-form @submit.prevent="onSubmit">
+      <b-form-group id="name-fieldset" label="Anime name:" label-for="name">
+        <b-form-input
+          id="name"
+          v-model="form.name"
+          type="text"
+          required
+          placeholder="Enter anime name"
+        ></b-form-input>
+      </b-form-group>
       <b-form-group
         id="files-fieldset"
         description="See frame format at your backend :)"
@@ -37,7 +46,8 @@ export default {
   data() {
     return {
       form: {
-        framesFiles: []
+        framesFiles: [],
+        name: ""
       },
       progressValue: 0,
       progressMax: 100,
@@ -71,7 +81,7 @@ export default {
     },
 
     onSubmit: async function() {
-      let { framesFiles: files } = this.form;
+      let { framesFiles: files, name } = this.form;
       let frames = Array();
       this.progressStage = "Prepairing for upload";
       this.progressMax = files.length;
@@ -87,7 +97,9 @@ export default {
       this.progressValue = 0;
 
       try {
-        let response = await this.$http.get("/player/init_upload/");
+        let response = await this.$http.post("/player/init_upload/", {
+          name: name
+        });
         let {
           data: { token }
         } = response;
