@@ -1,5 +1,9 @@
 FROM python:3.7-alpine
 
+MAINTAINER @pomo_mondreganto
+
+ENV PYTHONUNBUFFERED=1
+
 RUN apk add gcc make musl-dev postgresql-dev
 
 ADD src/authentication/requirements.txt /requirements.txt

@@ -6,7 +6,7 @@
       variant="danger"
       type="submit"
       :anime="anime"
-      @click="$router.push(getAnimeUrl(anime.id))"
+      @click="$router.push(getAnimeUrl(anime.token))"
       >WATCH ANIME</b-button
     >
   </div>
@@ -17,16 +17,16 @@ export default {
   data: function() {
     return {
       anime: {
-        id: 1
+        token: "broken"
       }
     };
   },
   methods: {
-    getAnimeUrl: function(idx) {
+    getAnimeUrl: function(token) {
       return {
         name: "player",
         params: {
-          id: idx
+          token: token
         }
       };
     }

@@ -9,10 +9,8 @@ services:
       context: .
       dockerfile: docker_config/authentication/Dockerfile
     env_file:
-      - ./docker_config/postgres/env.env
+      - ./docker_config/db_pass.env
       - ./docker_config/authentication/env.env
-    environment:
-      - PYTHONUNBUFFERED=1
 
   player_internal:
     build:
@@ -21,19 +19,15 @@ services:
     restart: on-failure
     volumes:
       - ./docker_volumes/anime:/anime
-    environment:
-      - PYTHONUNBUFFERED=1
 
   player_api:
     build:
       context: .
       dockerfile: docker_config/player/api/Dockerfile
     env_file:
-      - ./docker_config/postgres/env.env
+      - ./docker_config/db_pass.env
     volumes:
       - ./docker_volumes/anime:/anime:ro
-    environment:
-      - PYTHONUNBUFFERED=1
 
   nginx:
     image: nginx:1.15.9-alpine
@@ -44,14 +38,24 @@ services:
     ports:
       - "8000:80"
 
+  front:
+    build:
+      context: .
+      dockerfile: docker_config/front/Dockerfile
+    volumes:
+      - ./front:/app
+
   postgres:
     image: postgres:10.8-alpine
     volumes:
       - ./docker_volumes/postgres/data/:/var/lib/postgresql/data/
     env_file:
-      - ./docker_config/postgres/env.env
+      - ./docker_config/db_pass.env
 
   redis:
     image: redis:5.0.5-alpine
+    command: ["sh", "-c", "redis-server --requirepass $${REDIS_PASSWORD}"]
     sysctls:
       net.core.somaxconn: 1024
+    env_file:
+      - ./docker_config/db_pass.env

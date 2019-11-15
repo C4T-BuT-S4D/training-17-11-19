@@ -1,6 +1,8 @@
 FROM pomomondreganto/aniparser:latest
 
-RUN apk add make
+MAINTAINER @pomo_mondreganto
+
+ENV PYTHONUNBUFFERED=1
 
 ADD src/player/internal/requirements.txt /requirements.txt
 RUN pip3 install -r /requirements.txt

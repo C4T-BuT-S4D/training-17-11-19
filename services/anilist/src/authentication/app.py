@@ -16,13 +16,21 @@ app.secret_key = os.environ['SECRET_KEY']
 
 @app.before_first_request
 def init_db():
-    query = '''CREATE TABLE IF NOT EXISTS users(
+    users_query = '''CREATE TABLE IF NOT EXISTS users(
         id SERIAL PRIMARY KEY,
         username VARCHAR(255) UNIQUE NOT NULL,
         password VARCHAR(255)
     )'''
+
+    anime_uploads_query = '''CREATE TABLE IF NOT EXISTS anime_uploads(
+        id SERIAL PRIMARY KEY,
+        user_id INTEGER NOT NULL,
+        token VARCHAR(64) NOT NULL
+    )'''
+
     with storage.db_cursor() as (conn, curs):
-        curs.execute(query)
+        curs.execute(users_query)
+        curs.execute(anime_uploads_query)
         conn.commit()
 
 
@@ -57,7 +65,18 @@ def login_required(f):
     return wrapper
 
 
+def assert_json_post(f):
+    @wraps(f)
+    def wrapper(*args, **kwargs):
+        if request.json is None:
+            abort(400)
+        return f(*args, **kwargs)
+
+    return wrapper
+
+
 @app.route('/api/auth/login', methods=['POST'])
+@assert_json_post
 def login():
     username = request.json.get('username')
     password = request.json.get('password')
@@ -83,6 +102,7 @@ def login():
 
 
 @app.route('/api/auth/register', methods=['POST'])
+@assert_json_post
 def register():
     username = request.json.get('username')
     password = request.json.get('password')
