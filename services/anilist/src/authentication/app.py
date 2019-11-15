@@ -18,12 +18,13 @@ app.secret_key = os.environ['SECRET_KEY']
 def init_db():
     users_query = '''CREATE TABLE IF NOT EXISTS users(
         id SERIAL PRIMARY KEY,
-        username VARCHAR(255) UNIQUE NOT NULL,
+        name VARCHAR(255) UNIQUE NOT NULL,
         password VARCHAR(255)
     )'''
 
     anime_uploads_query = '''CREATE TABLE IF NOT EXISTS anime_uploads(
         id SERIAL PRIMARY KEY,
+        name VARCHAR(255) NOT NULL,
         user_id INTEGER NOT NULL,
         token VARCHAR(64) NOT NULL
     )'''
@@ -78,15 +79,15 @@ def assert_json_post(f):
 @app.route('/api/auth/login', methods=['POST'])
 @assert_json_post
 def login():
-    username = request.json.get('username')
+    name = request.json.get('name')
     password = request.json.get('password')
 
-    if not username or not password:
-        return get_error('Specify both username and password', 400)
+    if not name or not password:
+        return get_error('Specify both name and password', 400)
 
     with storage.db_cursor(dict_cursor=True) as (conn, curs):
-        query = 'SELECT * FROM users WHERE username=%s AND password=%s'
-        curs.execute(query, (username, password))
+        query = 'SELECT * FROM users WHERE name=%s AND password=%s'
+        curs.execute(query, (name, password))
         user = curs.fetchone()
 
     if not user:
@@ -104,25 +105,25 @@ def login():
 @app.route('/api/auth/register', methods=['POST'])
 @assert_json_post
 def register():
-    username = request.json.get('username')
+    name = request.json.get('name')
     password = request.json.get('password')
 
-    if not username or not password:
-        return get_error('Specify both username and password', 400)
+    if not name or not password:
+        return get_error('Specify both name and password', 400)
 
-    username = re.sub('[\\x00-\\x1f!@#$%^&*()]', '', username)
+    name = re.sub('[\\x00-\\x1f!@#$%^&*()]', '', name)
 
     with storage.db_cursor(dict_cursor=True) as (conn, curs):
-        query = 'SELECT * FROM users WHERE username=%s'
-        curs.execute(query, (username,))
+        query = 'SELECT * FROM users WHERE name=%s'
+        curs.execute(query, (name,))
         user = curs.fetchone()
 
     if user:
-        return get_error('Username taken', 400)
+        return get_error('name taken', 400)
 
     with storage.db_cursor(dict_cursor=True) as (conn, curs):
-        query = 'INSERT INTO users (username, password) VALUES (%s, %s)'
-        curs.execute(query, (username, password))
+        query = 'INSERT INTO users (name, password) VALUES (%s, %s)'
+        curs.execute(query, (name, password))
         conn.commit()
 
     return jsonify('ok')
