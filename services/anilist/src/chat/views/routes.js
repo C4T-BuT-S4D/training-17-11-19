@@ -110,8 +110,8 @@ router.post("/send_message/", async (req, res) => {
 
   const time = new Date();
 
-  messages.insertOne({ time, from: form, to: body.to });
-  messages.insertOne({ time, from: body.to, to: from });
+  messages.insertOne({ time, from: from, to: body.to, message: body.message });
+  messages.insertOne({ time, from: body.to, to: from, message: body.message });
 
   res.json({ result: "ok" });
 });
