@@ -24,7 +24,7 @@
             type="submit"
             class="mr-2"
             v-else
-            >{{ $store.state.user.username }}</b-button
+            >{{ $store.state.user.name }}</b-button
           >
           <b-button
             size="sm"
