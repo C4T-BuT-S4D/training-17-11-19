@@ -1,5 +1,7 @@
 const redis = require("redis");
-const client = redis.createClient();
+const client = redis.createClient({
+  password: "9bdfe927ddbf2efc21aa3400a106d8f2" //CHANGE THIS!
+});
 const { promisify } = require("util");
 
 client.on("error", function(err) {
