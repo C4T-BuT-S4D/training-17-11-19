@@ -4,7 +4,6 @@ import gzip
 import os
 import struct
 
-import requests
 from checklib import *
 
 PORT = 8000
@@ -52,8 +51,10 @@ class CheckMachine:
     def register_user(self):
         username = rnd_username()
         password = rnd_password()
-
-        r = requests.post(f'{self.url}/auth/register', json={'username': username, 'password': password})
+        r = get_initialized_session().post(
+            f'{self.url}/auth/register',
+            json={'username': username, 'password': password},
+        )
         check_response(r, 'Could not register')
         return username, password
 
