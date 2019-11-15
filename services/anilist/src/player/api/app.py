@@ -26,6 +26,15 @@ async def init_upload(request):
     return json({'token': upload_token})
 
 
+@app.route('/api/player/info/', methods=['GET'])
+@login_required
+async def init_upload(request):
+    data = request.args
+    token = data.get('token', '')
+    result = await controllers.get_upload_or_404(token)
+    return json(result)
+
+
 @app.route('/api/player/upload_chunk/', methods=['POST'])
 @login_required
 async def upload_chunk(request):

@@ -71,13 +71,18 @@ class CheckMachine:
         check_response(r, 'Could not get Me')
         return get_json(r, 'Could not get Me')
 
-    def get_upload_token(self, sess):
-        name = rnd_string(20)
+    def get_upload_token(self, sess, name):
         r = sess.post(f'{self.url}/player/init_upload/', json={'name': name})
         check_response(r, 'Could not get upload token')
         data = get_json(r, 'Could not get upload token')
         assert_in('token', data, 'Could not get upload token')
         return data['token']
+
+    def get_anime_info(self, sess, token):
+        r = sess.get(f'{self.url}/player/info/', params={'token': token})
+        check_response(r, 'Could not get anime info')
+        data = get_json(r, 'Could not get anime info')
+        return data
 
     @staticmethod
     def load_local_frames(video, numbers):
@@ -99,7 +104,7 @@ class CheckMachine:
             data = f.read()
         return data
 
-    def upload_frames(self, sess, frames):
+    def upload_frames(self, sess, name, frames):
         blocks = [
             list(map(
                 lambda x: base64.b64encode(x).decode(),
@@ -107,7 +112,7 @@ class CheckMachine:
             )) for i in range(0, len(frames), 10)
         ]
 
-        token = self.get_upload_token(sess)
+        token = self.get_upload_token(sess, name)
         for i, block in enumerate(blocks):
             r = sess.post(
                 f'{self.url}/player/upload_chunk/',

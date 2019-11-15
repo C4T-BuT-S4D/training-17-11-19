@@ -62,9 +62,27 @@ async def get_user_upload(user_id, upload_token):
     return row
 
 
+async def get_upload(upload_token):
+    conn = await storage.get_db_conn()
+    query = '''SELECT * FROM anime_uploads WHERE token = $1'''
+    row = await conn.fetchrow(query, upload_token)
+    if not row:
+        return None
+
+    row = dict(row)
+    return row
+
+
 async def upload_exists_or_404(request, token):
     user = await get_current_user(request)
     upload = await get_user_upload(user['id'], token)
+    if not upload:
+        abort(404)
+    return True
+
+
+async def get_upload_or_404(token):
+    upload = await get_upload(token)
     if not upload:
         abort(404)
     return upload
