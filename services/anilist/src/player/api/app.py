@@ -19,7 +19,7 @@ def login_required(f):
     return wrapper
 
 
-@app.route('/api/player/init_upload/', methods=['GET'])
+@app.route('/api/player/init_upload/', methods=['POST'])
 @login_required
 async def init_upload(request):
     upload_token = await controllers.add_user_upload(request)

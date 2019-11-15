@@ -72,7 +72,8 @@ class CheckMachine:
         return get_json(r, 'Could not get Me')
 
     def get_upload_token(self, sess):
-        r = sess.get(f'{self.url}/player/init_upload/')
+        name = rnd_string(20)
+        r = sess.post(f'{self.url}/player/init_upload/', json={'name': name})
         check_response(r, 'Could not get upload token')
         data = get_json(r, 'Could not get upload token')
         assert_in('token', data, 'Could not get upload token')

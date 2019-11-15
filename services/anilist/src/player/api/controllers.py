@@ -35,10 +35,18 @@ async def get_current_user(request):
 async def add_user_upload(request):
     user = await get_current_user(request)
     upload_token = secrets.token_hex(16)
+    name = request.json.get('name', '')
 
     conn = await storage.get_db_conn()
-    query = '''INSERT INTO anime_uploads (user_id, token) VALUES ($1, $2)'''
-    await conn.execute(query, user['id'], upload_token)
+    query = '''INSERT INTO anime_uploads (user_id, name, token) VALUES ($1, $2, $3)'''
+    await conn.execute(query, user['id'], name, upload_token)
+
+    query = '''SELECT * FROM anime_uploads WHERE token=$1'''
+    result = await conn.fetchrow(query, upload_token)
+    result = dict(result)
+
+    redis = await storage.get_async_redis_pool()
+    await redis.set(upload_token, ujson.dumps(result))
 
     return upload_token
 
@@ -49,11 +57,9 @@ async def get_user_upload(user_id, upload_token):
     row = await conn.fetchrow(query, user_id, upload_token)
     if not row:
         return None
-    return {
-        'id': row['id'],
-        'user_id': row['user_id'],
-        'token': row['token'],
-    }
+
+    row = dict(row)
+    return row
 
 
 async def upload_exists_or_404(request, token):
