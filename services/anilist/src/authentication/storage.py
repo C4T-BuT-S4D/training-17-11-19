@@ -29,7 +29,8 @@ def get_redis_storage():
     global _redis_storage
 
     if not _redis_storage:
-        _redis_storage = redis.StrictRedis(host='redis', db=0)
+        password = os.environ['REDIS_PASSWORD']
+        _redis_storage = redis.StrictRedis(host='redis', db=0, password=password)
 
     return _redis_storage
 

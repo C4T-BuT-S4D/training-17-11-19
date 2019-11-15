@@ -69,8 +69,6 @@ async def get_chunk(request):
     data = request.args
     token = data.get('token', '')
 
-    await controllers.upload_exists_or_404(request, token)
-
     start = int(data.get('start', 0))
     end = int(data.get('end', start + 30))
 

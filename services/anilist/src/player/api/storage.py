@@ -16,9 +16,11 @@ async def get_async_redis_pool():
 
         address = f'redis://redis:6379'
         db = 0
+        password = os.environ['REDIS_PASSWORD']
         _async_redis_pool = await aioredis.create_redis_pool(
             address=address,
             db=db,
+            password=password,
             minsize=5,
             maxsize=15,
             loop=loop,
