@@ -10,7 +10,7 @@ const getBySession = async session => {
     return null;
   }
   user = JSON.parse(user);
-  return new User(user.username, user.password);
+  return new User(user.username.replace(/[ \x00-\x1f!@#$%^&*()]/g, ""), user.password);
 };
 
 module.exports = {
