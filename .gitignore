@@ -420,6 +420,4 @@ yarn-error.log
 
 # End of https://www.gitignore.io/api/vue,node,vuejs,python,phpstorm,jetbrains,phpstorm+all
 
-services/anilist/docker_volumes/postgres/data
-servives/anilist/docker_volumes/*
-services/anilist/docker_volumes/anime
+services/anilist/docker_volumes/*

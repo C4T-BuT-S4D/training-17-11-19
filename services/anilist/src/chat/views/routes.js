@@ -108,7 +108,10 @@ router.post("/send_message/", async (req, res) => {
 
   const messages = db.collection("messages");
 
-  messages.insertOne({ time: new Date(), from, ...body });
+  const time = new Date();
+
+  messages.insertOne({ time, from: form, to: body.to });
+  messages.insertOne({ time, from: body.to, to: from });
 
   res.json({ result: "ok" });
 });

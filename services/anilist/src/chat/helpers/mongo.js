@@ -1,7 +1,7 @@
 const MongoClient = require("mongodb").MongoClient;
 const { promisify } = require("util");
 
-const url = "mongodb://localhost:27017";
+const url = "mongodb://mongo:27017";
 
 const client = new MongoClient(url, {
   useUnifiedTopology: true
