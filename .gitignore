@@ -168,9 +168,6 @@ typings/
 # nuxt.js build output
 .nuxt
 
-# react / gatsby 
-public/
-
 # vuepress build output
 .vuepress/dist
 
@@ -423,7 +420,4 @@ yarn-error.log
 
 # End of https://www.gitignore.io/api/vue,node,vuejs,python,phpstorm,jetbrains,phpstorm+all
 
-services/anilist/docker_volumes/postgres/data
-servives/anilist/docker_volumes/*
-services/anilist/docker_volumes/anime
-services/anilist/src/chat/
+services/anilist/docker_volumes/*

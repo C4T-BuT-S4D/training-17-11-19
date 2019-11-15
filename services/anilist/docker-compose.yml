@@ -29,6 +29,13 @@ services:
     volumes:
       - ./docker_volumes/anime:/anime:ro
 
+  chat:
+    build:
+      context: .
+      dockerfile: docker_config/chat/Dockerfile
+    env_file:
+      - ./docker_config/chat/env.env
+
   nginx:
     image: nginx:1.15.9-alpine
     volumes:
@@ -59,3 +66,8 @@ services:
       net.core.somaxconn: 1024
     env_file:
       - ./docker_config/db_pass.env
+
+  mongo:
+    image: mvertes/alpine-mongo:4.0.4-0
+    volumes:
+      - ./docker_volumes/mongodb:/data/db

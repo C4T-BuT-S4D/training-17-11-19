@@ -1,5 +1,6 @@
 import json
 import os
+import re
 import secrets
 from functools import wraps
 
@@ -108,6 +109,8 @@ def register():
 
     if not username or not password:
         return get_error('Specify both username and password', 400)
+
+    username = re.sub('[\\x00-\\x1f!@#$%^&*()]', '', username)
 
     with storage.db_cursor(dict_cursor=True) as (conn, curs):
         query = 'SELECT * FROM users WHERE username=%s'
