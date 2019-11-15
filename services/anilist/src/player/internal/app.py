@@ -60,7 +60,6 @@ async def create(request):
     return json('ok')
 
 
-# noinspection PyUnresolvedReferences
 @app.route('/get/<prefix>/', methods=['GET'])
 async def get(request, prefix):
     data = request.args

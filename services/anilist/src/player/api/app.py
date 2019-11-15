@@ -31,26 +31,32 @@ async def init_upload(request):
 async def upload_chunk(request):
     data = request.json
 
-    token = data['token']
-    r_start = data['start']
-    frames = data['frames']
+    token = data.get('token', '')
+    start = data.get('start')
+    frames = data.get('frames')
+
+    await controllers.upload_exists_or_404(request, token)
 
     if not isinstance(frames, list):
+        abort(400)
+
+    try:
+        start = int(start)
+    except ValueError:
         abort(400)
 
     if len(frames) > 30:
         return json({'error': 'Too big chunk'}, status=400)
 
-    await controllers.upload_exists_or_404(request, token)
-
     async with httpx.AsyncClient() as client:
         r = await client.post(
             f'http://player_internal:5000/create/',
             json={
-                'start': r_start,
+                'start': start,
                 'prefix': token,
                 'frames': frames,
-            })
+            },
+        )
     try:
         return json({'response': r.json()})
     except Exception as e:
@@ -77,7 +83,8 @@ async def get_chunk(request):
             params={
                 'start': start,
                 'end': end,
-            })
+            },
+        )
     try:
         return json({'response': r.json()})
     except Exception as e:
@@ -104,7 +111,8 @@ async def parse_chunk(request):
             f'http://player_internal:5000/parse/',
             json={
                 'frames': frames,
-            })
+            },
+        )
     try:
         return json({'response': r.json()})
     except Exception as e:
