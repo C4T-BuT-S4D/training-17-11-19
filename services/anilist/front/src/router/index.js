@@ -5,6 +5,7 @@ import Login from "@/views/Login";
 import Register from "@/views/Register";
 import Player from "@/views/Player";
 import Upload from "@/views/Upload";
+import Uploads from "@/views/MyUploads";
 
 Vue.use(VueRouter);
 
@@ -28,6 +29,11 @@ const routes = [
     path: "/anime/upload",
     name: "upload",
     component: Upload
+  },
+  {
+    path: "/anime/my",
+    name: "uploads",
+    component: Uploads
   },
   {
     path: "/anime/:token",
