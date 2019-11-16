@@ -92,6 +92,10 @@ def check(host):
 
     token = mch.upload_frames(sess, anime_name, frames)
 
+    my_uploads = mch.get_my_uploads(sess)
+    assert_in_list_dicts(my_uploads, 'token', token, 'Invalid my uploads')
+    assert_in_list_dicts(my_uploads, 'user_id', me['id'], 'Invalid my uploads')
+
     anime_info = mch.get_anime_info(sess, token)
     assert_in('name', anime_info, 'Invalid anime info')
     assert_in('token', anime_info, 'Invalid anime info')

