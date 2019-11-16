@@ -44,7 +44,7 @@ async def upload_chunk(request):
     start = data.get('start')
     frames = data.get('frames')
 
-    await controllers.upload_exists_or_404(request, token)
+    await controllers.user_upload_exists_or_404(request, token)
 
     if not isinstance(frames, list):
         abort(400)
@@ -124,6 +124,13 @@ async def parse_chunk(request):
         return json({'response': r.json()})
     except Exception as e:
         return json({'error': str(e)}, status=400)
+
+
+@app.route('/api/player/my_uploads/', methods=['GET'])
+@login_required
+async def get_my_uploads(request):
+    uploads = await controllers.get_user_uploads(request)
+    return json(uploads)
 
 
 if __name__ == '__main__':
