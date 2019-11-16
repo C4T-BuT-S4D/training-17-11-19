@@ -164,3 +164,8 @@ class CheckMachine:
                     ))
                 }
             )
+
+    def get_my_uploads(self, sess):
+        r = sess.get(f'{self.url}/player/my_uploads/')
+        check_response(r, 'Could not get my uploads')
+        return get_json(r, 'Could not get my uploads')
