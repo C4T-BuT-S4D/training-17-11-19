@@ -51,32 +51,18 @@ async def add_user_upload(request):
     return upload_token
 
 
-async def get_user_upload(user_id, upload_token):
-    conn = await storage.get_db_conn()
-    query = '''SELECT * FROM anime_uploads WHERE user_id = $1 AND token = $2'''
-    row = await conn.fetchrow(query, user_id, upload_token)
-    if not row:
-        return None
-
-    row = dict(row)
-    return row
-
-
 async def get_upload(upload_token):
-    conn = await storage.get_db_conn()
-    query = '''SELECT * FROM anime_uploads WHERE token = $1'''
-    row = await conn.fetchrow(query, upload_token)
-    if not row:
-        return None
-
-    row = dict(row)
-    return row
-
-
-async def upload_exists_or_404(request, token):
-    user = await get_current_user(request)
-    upload = await get_user_upload(user['id'], token)
+    redis = await storage.get_async_redis_pool()
+    upload = await redis.get(upload_token)
     if not upload:
+        return None
+    return ujson.loads(upload.decode())
+
+
+async def user_upload_exists_or_404(request, token):
+    user = await get_current_user(request)
+    upload = await get_upload(token)
+    if not upload or upload.get('user_id') != user['id']:
         abort(404)
     return True
 
@@ -86,3 +72,11 @@ async def get_upload_or_404(token):
     if not upload:
         abort(404)
     return upload
+
+
+async def get_user_uploads(request):
+    user = await get_current_user(request)
+    conn = await storage.get_db_conn()
+    query = '''SELECT * FROM anime_uploads WHERE user_id = $1'''
+    rows = await conn.fetch(query, user['id'])
+    return list(map(dict, rows))
