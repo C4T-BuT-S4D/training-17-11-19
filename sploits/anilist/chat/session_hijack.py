@@ -20,7 +20,7 @@ cookies = {
     'session': data['token']
 }
 
-r = requests.get(
+r = requests.post(
     f'{mch.url}/chat/get_messages/',
     json={
         "to": target
