@@ -68,7 +68,7 @@ class CheckMachine:
         assert_eq('ok', resp['result'], 'Invalid json on message sending')
 
     def get_messages(self, sess, to):
-        r = sess.get(f'{self.url}/chat/get_messages/', json={
+        r = sess.post(f'{self.url}/chat/get_messages/', json={
             "to": to
         })
 

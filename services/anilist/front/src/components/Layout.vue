@@ -15,7 +15,7 @@
             type="submit"
             class="mr-2"
             @click="$router.push({ name: 'login' })"
-            v-if="this.$store.state.user === null"
+            v-if="$store.state.user === null"
             >Login</b-button
           >
           <b-button
@@ -31,7 +31,7 @@
             variant="danger"
             type="submit"
             @click="$router.push({ name: 'register' })"
-            v-if="this.$store.state.user === null"
+            v-if="$store.state.user === null"
             >Register</b-button
           >
           <b-button
