@@ -1,21 +1,37 @@
 <template>
   <div id="uploads">
-    <h5>Your anime list:</h5>
-    <ul v-for="anime in animeList" v-bind:key="anime.id">
-      <li>
-        <a
-          @click="
-            $router.push({
-              name: 'player',
-              params: {
-                token: anime.token
-              }
-            })
-          "
-          >{{ anime.name }}</a
+    <b-row>
+      <b-col>
+        <h5>Your anime list:</h5>
+      </b-col>
+      <b-col>
+        <b-button
+          size="sm"
+          variant="primary"
+          type="primary"
+          class="mr-2"
+          @click="$router.push({ name: 'upload' })"
+          >Upload anime!</b-button
         >
-      </li>
-    </ul>
+      </b-col>
+    </b-row>
+    <b-row>
+      <ul v-for="anime in animeList" v-bind:key="anime.id">
+        <li>
+          <a
+            @click="
+              $router.push({
+                name: 'player',
+                params: {
+                  token: anime.token
+                }
+              })
+            "
+            >{{ anime.name }}</a
+          >
+        </li>
+      </ul>
+    </b-row>
   </div>
 </template>
 
