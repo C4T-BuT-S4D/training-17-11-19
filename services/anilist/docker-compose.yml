@@ -37,6 +37,16 @@ services:
       - ./docker_config/chat/env.env
       - ./docker_config/db_pass.env
 
+  anidb:
+    build:
+      context: .
+      dockerfile: docker_config/anidb/Dockerfile
+    env_file:
+      - ./docker_config/anidb/env.env
+      - ./docker_config/db_pass.env
+    volumes:
+      - ./docker_volumes/anidb:/db
+
   nginx:
     image: nginx:1.15.9-alpine
     volumes:

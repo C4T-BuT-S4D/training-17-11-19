@@ -31,7 +31,7 @@ class CreateAnimeTable extends Migration
         });
 
         Schema::create('anime_access', function (Blueprint $table) {
-            $table->bigInteger('id');
+            $table->bigIncrements('id');
             $table->integer('anime_id');
             $table->integer('user_id');
             $table->timestamps();

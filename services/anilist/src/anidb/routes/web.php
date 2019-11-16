@@ -11,17 +11,16 @@
 |
 */
 
-$router->get('/', function () use ($router) {
+$router->get('/api/db', function () use ($router) {
     return $router->app->version();
 });
 
 
 $router->group(["middleware" => ["auth:api"]], function () use ($router) {
-    $router->get('/anime', 'AnimeController@listAnime');
-    $router->post('/anime', 'AnimeController@addAnime');
-    $router->post('/anime/{id}', 'AnimeController@addAnimeLink');
-    $router->get('/anime/{id}', 'AnimeController@detailsAnime');
-    $router->get('/my_anime', 'AnimeController@listMyAnime');
-    $router->get('/get_access', 'AnimeController@getAccess');
-
+    $router->get('/api/db/anime', 'AnimeController@listAnime');
+    $router->post('/api/db/anime', 'AnimeController@addAnime');
+    $router->post('/api/db/anime/{id}', 'AnimeController@addAnimeLink');
+    $router->get('/api/db/anime/{id}', 'AnimeController@detailsAnime');
+    $router->get('/api/db/my_anime', 'AnimeController@listMyAnime');
+    $router->get('/api/db/get_access', 'AnimeController@getAccess');
 });
