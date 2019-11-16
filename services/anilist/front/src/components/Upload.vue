@@ -69,6 +69,11 @@ export default {
           let binary = "";
           let bytes = new Uint8Array(temporaryFileReader.result);
           let len = bytes.byteLength;
+          let curLen = len;
+          for (let j = 0; j < 8; j++) {
+            binary += String.fromCharCode(curLen % 256);
+            curLen /= 256;
+          }
           for (let j = 0; j < len; j++) {
             binary += String.fromCharCode(bytes[j]);
           }
