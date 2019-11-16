@@ -1,10 +1,10 @@
 <template>
   <layout>
     <b-row id="content-row">
-      <b-col cols="8">
+      <b-col :cols="$store.state.user === null ? 12 : 8">
         <slot></slot>
       </b-col>
-      <b-col cols="4" id="chat-col">
+      <b-col cols="4" id="chat-col" v-if="$store.state.user !== null">
         <chat></chat>
       </b-col>
     </b-row>
