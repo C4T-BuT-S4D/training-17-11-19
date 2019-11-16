@@ -18,8 +18,8 @@ for u1 in l:
         for u2 in l:
             try:
                 r = s.get(f'http://{ip}:8000/api/chat/get_messages/', json={
-                    "to": u2.get("username"),
-                    "from": u1.get("username")
+                    "to": u2.get("name"),
+                    "from": u1.get("name")
                 })
 
                 print(r.content, flush=True)

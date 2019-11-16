@@ -69,9 +69,9 @@ def check(host):
     f2 = False
 
     for u in l:
-        if u.get('username') == u1:
+        if u.get('name') == u1:
             f1 = True
-        if u.get('username') == u2:
+        if u.get('name') == u2:
             f2 = True
 
     if not f1 or not f2:
