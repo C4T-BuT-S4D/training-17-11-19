@@ -19,14 +19,14 @@ class CheckMachine:
 
         sess = get_initialized_session()
 
-        r = sess.post(f'{self.url}/auth/register', json={'username': username, 'password': password})
+        r = sess.post(f'{self.url}/auth/register', json={'name': username, 'password': password})
         check_response(r, 'Could not register')
         return username, password
 
     def login_user(self, username, password):
         sess = get_initialized_session()
 
-        r = sess.post(f'{self.url}/auth/login', json={'username': username, 'password': password})
+        r = sess.post(f'{self.url}/auth/login', json={'name': username, 'password': password})
         check_response(r, 'Could not login')
 
         return sess

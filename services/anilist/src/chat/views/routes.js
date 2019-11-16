@@ -16,10 +16,10 @@ router.post("/enter/", async (req, res) => {
   const db = getDB();
   const users = db.collection("users");
   const me = await users.findOne({
-    username: user.username.replace(/[ \x00-\x1f!@#$%^&*()]/g, "")
+    name: user.name.replace(/[ \x00-\x1f!@#$%^&*()]/g, "")
   });
   if (me === null) {
-    users.insertOne({ username: user.username });
+    users.insertOne({ name: user.name });
   }
   res.json({ result: "ok" });
 });
@@ -48,17 +48,17 @@ router.get("/get_messages/", async (req, res) => {
   }
   const db = getDB();
   const users = db.collection("users");
-  const me = await users.findOne({ username: user.username });
+  const me = await users.findOne({ name: user.name });
   if (me === null) {
     res.status(400);
     res.json({ error: "no chat entered" });
     return;
   }
-  const from = user.username.replace(/[ \x00-\x1f!@#$%^&*()]/g, "");
+  const from = user.name.replace(/[ \x00-\x1f!@#$%^&*()]/g, "");
   let body = req.body;
   if (body.to === undefined) {
     res.status(400);
-    res.json({ error: "no username provided" });
+    res.json({ error: "no name provided" });
     return;
   } else {
     body.to = body.to.replace(/[ \x00-\x1f!@#$%^&*()]/g, "");
@@ -84,17 +84,17 @@ router.post("/send_message/", async (req, res) => {
   }
   const db = getDB();
   const users = db.collection("users");
-  const me = await users.findOne({ username: user.username });
+  const me = await users.findOne({ name: user.name });
   if (me === null) {
     res.status(400);
     res.json({ error: "no chat entered" });
     return;
   }
-  const from = user.username.replace(/[ \x00-\x1f!@#$%^&*()]/g, "");
+  const from = user.name.replace(/[ \x00-\x1f!@#$%^&*()]/g, "");
   let body = req.body;
   if (body.to === undefined) {
     res.status(400);
-    res.json({ error: "no username provided" });
+    res.json({ error: "no name provided" });
     return;
   } else {
     body.to = body.to.replace(/[ \x00-\x1f!@#$%^&*()]/g, "");

@@ -18,16 +18,16 @@ l = mch.list_users(s)
 
 for u1 in l:
     try:
-        fake_u = u1.get("username") + " "
+        fake_u = u1.get("name") + " "
         p = sha512(b"SALT_!@3123" + fake_u.encode()).hexdigest()
         r = requests.post(f'http://{ip}:8000/api/auth/register', json={
-            "username": fake_u,
+            "name": fake_u,
             "password": p,
         })
         s = mch.login_user(fake_u, p)
         for u2 in l:
             try:
-                m = mch.get_messages(s, u2.get("username"))
+                m = mch.get_messages(s, u2.get("name"))
                 print(m, flush=True)
             except:
                 pass
