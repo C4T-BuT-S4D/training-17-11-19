@@ -14,9 +14,9 @@
 
 | Сервис | Язык | Чекер | Сплоиты | Автор |
 |--------|------|-------|---------|-------|
-| **[player](services/anilist/player/)** | Python, C | [Чекер](checkers/anilist/player/) | [Сплоиты](sploits/anilist/player/) | [@pomo_mondreganto](https://github.com/pomo-mondreganto) |
-| **[chat](services/anilist/chat/)** | NodeJS | [Чекер](checkers/anilist/chat/) | [Сплоиты](sploits/anilist/chat/) | [@kekov](https://github.com/xmikasax) |
-| **[anidb](services/anilist/anidb/)** | Python | [Чекер](checkers/anilist/anidb/) | [Сплоиты](sploits/anilist/anidb/) | [@jnovikov](https://github.com/jnovikov) |
+| **[player](services/anilist/src/player/)** | Python, C | [Чекер](checkers/anilist/player/) | [Сплоиты](sploits/anilist/player/) | [@pomo_mondreganto](https://github.com/pomo-mondreganto) |
+| **[chat](services/anilist/src/chat/)** | NodeJS | [Чекер](checkers/anilist/chat/) | [Сплоиты](sploits/anilist/chat/) | [@kekov](https://github.com/xmikasax) |
+| **[anidb](services/anilist/src/anidb/)** | Python | [Чекер](checkers/anilist/anidb/) | [Сплоиты](sploits/anilist/anidb/) | [@jnovikov](https://github.com/jnovikov) |
 
 
 ## Образ
