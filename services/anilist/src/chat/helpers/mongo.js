@@ -6,10 +6,7 @@ const password = process.env.MONGO_INITDB_ROOT_PASSWORD;
 
 const url = `mongodb://${user}:${password}@mongo:27017`;
 
-const client = new MongoClient(url, {
-  useUnifiedTopology: true,
-  connectTimeoutMS: 1000 * 60 * 60 * 5
-});
+const client = new MongoClient(url);
 
 const getDB = () => client.db("chat_db");
 

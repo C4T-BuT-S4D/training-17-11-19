@@ -12,13 +12,18 @@ app.use("/api/chat/", routes.router);
 
 const port = 9000;
 
-mongo.client.connect(function(err) {
-  if (err === null) {
-    app.emit("ready");
-  } else {
-    console.error("Error" + err);
-  }
-});
+function connect() {
+  mongo.client.connect(function(err) {
+    if (err === null) {
+      app.emit("ready");
+    } else {
+      setTimeout(connect, 2000);
+      console.error("Error: " + err);
+    }
+  });
+}
+
+connect();
 
 app.on("ready", function() {
   app.listen(port, () => console.log(`Chat listening on port ${port}!`));

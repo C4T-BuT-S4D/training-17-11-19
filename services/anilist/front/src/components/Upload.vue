@@ -1,6 +1,5 @@
 <template>
   <div id="upload">
-    <div>Upload component (@pomo_mondreganto)</div>
     <b-form @submit.prevent="onSubmit">
       <b-form-group id="name-fieldset" label="Anime name:" label-for="name">
         <b-form-input
