@@ -16,7 +16,7 @@
 |--------|------|-------|---------|-------|
 | **[player](services/anilist/src/player/)** | Python, C | [Чекер](checkers/anilist/player/) | [Сплоиты](sploits/anilist/player/) | [@pomo_mondreganto](https://github.com/pomo-mondreganto) |
 | **[chat](services/anilist/src/chat/)** | NodeJS | [Чекер](checkers/anilist/chat/) | [Сплоиты](sploits/anilist/chat/) | [@kekov](https://github.com/xmikasax) |
-| **[anidb](services/anilist/src/anidb/)** | Python | [Чекер](checkers/anilist/anidb/) | [Сплоиты](sploits/anilist/anidb/) | [@jnovikov](https://github.com/jnovikov) |
+| **[anidb](services/anilist/src/anidb/)** | PHP | [Чекер](checkers/anilist/anidb/) | [Сплоиты](sploits/anilist/anidb/) | [@jnovikov](https://github.com/jnovikov) |
 
 
 ## Образ
