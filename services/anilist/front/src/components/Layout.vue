@@ -25,7 +25,7 @@
             class="mr-2"
             @click="$router.push({ name: 'uploads' })"
             v-else
-            >My anime ({{ $store.state.user.name }})</b-button
+            >My uploads ({{ $store.state.user.name }})</b-button
           >
           <b-button
             size="sm"
