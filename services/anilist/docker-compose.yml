@@ -63,7 +63,7 @@ services:
       context: .
       dockerfile: docker_config/front/Dockerfile
     volumes:
-      - ./front:/app
+      - front_build:/front_build
 
   postgres:
     image: postgres:10.8-alpine
