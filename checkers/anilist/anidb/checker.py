@@ -57,7 +57,10 @@ def get(host, flag_id, flag, _vuln):
 
     res = mch.get_anime_detail(s1, ani_id)
 
-    links = [x.get('content') for x in res['links']]
+    try:
+        links = [x.get('content') for x in res['links']]
+    except:
+        cquit(Status.CORRUPT, 'Invalid links')
 
     if flag not in links:
         cquit(Status.CORRUPT, 'Failed to find anime link')
