@@ -72,6 +72,15 @@ def check(host):
     if len(my_anime) < 1:
         cquit(Status.MUMBLE, 'Coudn get user anime')
 
+    # Check anime search
+    ani_search = []
+    if randint(0, 1) % 2 == 0:
+        ani_search = mch.find_anime(s1, title=title[:-2])
+    else:
+        ani_search = mch.find_anime(s1, description=description[:-2])
+
+    assert_in(title, [x.get('title') for x in ani_search], 'Failed to find anime by fields')
+
     u1_ani_id = my_anime[-1]['id']
 
     u1_link = rnd_string(10)
