@@ -62,7 +62,9 @@
         </b-form-invalid-feedback>
         <b-button type="submit" variant="primary">Get access</b-button>
       </b-form>
-      <b-alert variant="info" dismissible :show="isAlert">{{ accessMessage }} </b-alert>
+      <b-alert variant="info" dismissible :show="isAlert">
+        {{ accessMessage }}
+      </b-alert>
     </div>
   </div>
 </template>
@@ -109,7 +111,6 @@ export default {
         const {
           data: { result: result }
         } = response;
-        console.log(result);
         this.anime = result.anime;
         if (result.links) {
           this.links = result.links;
