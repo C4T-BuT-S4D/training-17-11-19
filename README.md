@@ -27,7 +27,7 @@
 
 ## Инфраструктура
 
-- DevOps: author [@pomo-mondreganto](https://github.com/pomo-mondreganto)
+- DevOps: author [@pomo_mondreganto](https://github.com/pomo-mondreganto)
 - Проверяющая система: [ForcAD](https://github.com/pomo-mondreganto/ForcAD)
 
 
