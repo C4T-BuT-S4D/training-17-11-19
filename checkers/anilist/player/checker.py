@@ -85,7 +85,7 @@ def check(host):
 
     video = random.randint(1, 10)
     frames_start = random.randint(0, 8400)
-    frames_end = random.randint(frames_start + 30, frames_start + 200)
+    frames_end = random.randint(frames_start + 30, frames_start + 60)
     frames_indices = list(range(frames_start, frames_end + 1))
     frames = mch.load_local_frames(video, frames_indices)
     anime_name = rnd_string(40)
@@ -103,17 +103,21 @@ def check(host):
     assert_eq(anime_info['token'], token, 'Invalid anime info')
     assert_eq(anime_info['user_id'], me['id'], 'Invalid anime info')
 
-    returned_frames = mch.get_frames(sess, token, 0, len(frames) - 1)
-    assert_eq(len(frames), len(returned_frames), 'Invalid number of frames returned')
-    for i in range(len(frames)):
-        assert_eq(mch.compress(frames[i][8:]), returned_frames[i], 'Invalid frame compression')
+    check_start = random.randint(0, len(frames) // 2)
+    check_end = random.randint(len(frames) // 2 + 1, len(frames) - 1)
+    check_len = check_end - check_start + 1
+
+    returned_frames = mch.get_frames(sess, token, check_start, check_end)
+    assert_eq(len(returned_frames), check_len, 'Invalid number of frames returned')
+    for i in range(check_len):
+        assert_eq(mch.compress(frames[check_start + i][8:]), returned_frames[i], 'Invalid frame compression')
 
     parsed_frames = mch.parse_frames(sess, returned_frames)
-    assert_eq(len(frames), len(parsed_frames), 'Invalid number of frames returned from parser')
+    assert_eq(len(parsed_frames), check_len, 'Invalid number of frames returned from parser')
 
-    for i in range(len(frames)):
-        assert_eq(len(frames[i][8:]), len(parsed_frames[i]), 'Invalid frame from parser')
-        assert_eq(frames[i][8:], parsed_frames[i], 'Invalid frame from parser')
+    for i in range(check_len):
+        assert_eq(len(frames[check_start + i][8:]), len(parsed_frames[i]), 'Invalid frame from parser')
+        assert_eq(frames[check_start + i][8:], parsed_frames[i], 'Invalid frame from parser')
 
     cquit(Status.OK)
 
