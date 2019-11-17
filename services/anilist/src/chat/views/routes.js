@@ -38,7 +38,7 @@ router.get("/users/", async (req, res) => {
   res.json({ result: users });
 });
 
-router.get("/get_messages/", async (req, res) => {
+router.post("/get_messages/", async (req, res) => {
   const { session = null } = req.cookies;
   const user = await usersCtrl.getBySession(session);
   if (user === null) {
