@@ -34,7 +34,7 @@ class AnimeController extends Controller
         $user = $request->user();
         $title = $request->input('title');
         $description = $request->input('description');
-        $year = $request->input('year');
+        $year = $request->input('year') ?? 0;
         $public = $request->input('public');
 
         $ok = $this->animeService->addAnime($user->id, $title, $description, $public, $year);

@@ -13,6 +13,16 @@ def random_title():
     return random.choice(random_titles).strip()
 
 
+def random_description(title):
+    fmt = [
+        "Story about: {}",
+        "It's all about {} adventures",
+        "It's definitely not a Boku no Pico"
+    ]
+    t = ' '.join(title.split()[:-1])
+    return random.choice(fmt).format(title)
+
+
 def put(host, _flag_id, flag, _vuln):
     mch = CheckMachine(host)
 
@@ -21,7 +31,7 @@ def put(host, _flag_id, flag, _vuln):
 
     title = random_title() + ' ' + rnd_string(3, '0123456789')
 
-    description = rnd_string(100)
+    description = random_description(title)
     mch.add_anime(s, title, description, randint(1998, 2021), '0')
 
     # Get last user's anime
@@ -62,7 +72,7 @@ def check(host):
 
     title = random_title() + ' ' + rnd_string(3, '0123456789')
 
-    description = rnd_string(100)
+    description = random_description(title)
     mch.add_anime(s1, title, description, randint(1998, 2021), '1')
 
     # Get last user's anime
@@ -92,7 +102,7 @@ def check(host):
     u2, p2 = mch.register_user()
     s2 = mch.login_user(u2, p2)
 
-    description = rnd_string(100)
+    description = random_description(title)
     title = random_title() + ' ' + rnd_string(3, '0123456789')
     mch.add_anime(s2, title, description, randint(1998, 2021), '0')
     # Get last user's anime
