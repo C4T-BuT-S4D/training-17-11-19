@@ -1,11 +1,6 @@
-FROM phppm/nginx
+FROM webdevops/php-apache:alpine
 
-RUN apk --no-cache add php7-sqlite3 php7-pdo_sqlite
+ADD docker_config/anidb/vhost.conf /opt/docker/etc/httpd/vhost.conf
+ADD src/anidb /app
 
-ADD src/anidb /var/www/
-
-ADD ./docker_config/anidb/entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
-
-
-CMD ["/entrypoint.sh"]
+RUN chmod -R o+rw /app
