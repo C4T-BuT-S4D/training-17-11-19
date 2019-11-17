@@ -16,8 +16,8 @@ def random_title():
 def random_description(title):
     fmt = [
         "Story about: {}",
-        "It's all about {} adventures",
-        "It's definitely not a Boku no Pico"
+        "It is all about {} adventures",
+        "It is definitely not a Boku no Pico"
     ]
     t = ' '.join(title.split()[:-1])
     return random.choice(fmt).format(title)
