@@ -5,8 +5,9 @@ from random import randint
 from time import sleep
 import random
 from anidb_lib import *
+import os
 
-random_titles = open('titles.txt').readlines()
+random_titles = open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'titles.txt')).readlines()
 
 
 def random_title():
