@@ -1,6 +1,5 @@
 <template>
   <div id="player">
-    <div>Player component (@pomo_mondreganto)</div>
     <div>Anime token: {{ animeToken }}</div>
     <div>Anime name: {{ animeName }}</div>
     <div>
