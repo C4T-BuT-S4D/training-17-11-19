@@ -6,6 +6,10 @@ import Register from "@/views/Register";
 import Player from "@/views/Player";
 import Upload from "@/views/Upload";
 import Uploads from "@/views/MyUploads";
+import AnimeList from "@/views/AnimeList";
+import MyAnimeList from "@/views/MyAnimeList";
+import AddAnime from "@/views/AddAnime";
+import AnimeDetail from "@/views/AnimeDetail";
 
 Vue.use(VueRouter);
 
@@ -36,9 +40,29 @@ const routes = [
     component: Uploads
   },
   {
+    path: "/anime/list",
+    name: "list",
+    component: AnimeList
+  },
+  {
+    path: "/anime/mylist",
+    name: "myList",
+    component: MyAnimeList
+  },
+  {
+    path: "/anime/add",
+    name: "animeAdd",
+    component: AddAnime
+  },
+  {
     path: "/anime/:token",
     name: "player",
     component: Player
+  },
+  {
+    path: "/animedetails/:animeId",
+    name: "detail",
+    component: AnimeDetail
   }
 ];
 
