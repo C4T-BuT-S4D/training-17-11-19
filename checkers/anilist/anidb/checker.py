@@ -120,7 +120,10 @@ def check(host):
     mch.add_links(s2, u2_ani_id, u2_link)
 
     # User2 get's user1 public link
-    links = [x.get('content') for x in mch.get_links(s2, u1_ani_id)]
+    try:
+        links = [x.get('content') for x in mch.get_links(s2, u1_ani_id)]
+    except:
+        cquit(Status.MUMBLE, 'Invalid links')
 
     assert_in(u1_link, links, 'Failed to get public link')
 
@@ -129,7 +132,10 @@ def check(host):
 
     mch.get_access(s1, u2_ani_id, u2_token)
 
-    links = [x.get('content') for x in mch.get_links(s1, u2_ani_id)]
+    try:
+        links = [x.get('content') for x in mch.get_links(s1, u2_ani_id)]
+    except:
+        cquit(Status.MUMBLE, 'Invalid links')
 
     assert_in(u2_link, links, 'Failed to get private links by token')
 
