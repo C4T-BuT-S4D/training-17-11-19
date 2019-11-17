@@ -11,6 +11,7 @@ services:
     env_file:
       - ./docker_config/db_pass.env
       - ./docker_config/authentication/env.env
+    restart: on-failure
     pids_limit: 100
     cpus: 0.25
     mem_limit: 500M
@@ -19,9 +20,9 @@ services:
     build:
       context: .
       dockerfile: docker_config/player/internal/Dockerfile
-    restart: on-failure
     volumes:
       - ./docker_volumes/anime:/anime
+    restart: on-failure
     pids_limit: 100
     cpus: 0.50
     mem_limit: 500M
@@ -34,6 +35,7 @@ services:
       - ./docker_config/db_pass.env
     volumes:
       - ./docker_volumes/anime:/anime:ro
+    restart: on-failure
     pids_limit: 100
     cpus: 0.50
     mem_limit: 500M
@@ -45,6 +47,7 @@ services:
     env_file:
       - ./docker_config/chat/env.env
       - ./docker_config/db_pass.env
+    restart: on-failure
     pids_limit: 100
     cpus: 0.25
     mem_limit: 500M
@@ -59,6 +62,7 @@ services:
       - ./docker_config/db_pass.env
     volumes:
       - ./docker_volumes/anidb:/db
+    restart: on-failure
     pids_limit: 100
     cpus: 0.25
     mem_limit: 500M
@@ -72,6 +76,7 @@ services:
       - front_build:/front_build:ro
     ports:
       - "8000:80"
+    restart: on-failure
     pids_limit: 100
     cpus: 0.50
     mem_limit: 200M
@@ -82,6 +87,7 @@ services:
       dockerfile: docker_config/front/Dockerfile
     volumes:
       - front_build:/front_build
+    restart: on-failure
 
   postgres:
     image: postgres:10.8-alpine
@@ -89,6 +95,7 @@ services:
       - ./docker_volumes/postgres/data/:/var/lib/postgresql/data/
     env_file:
       - ./docker_config/db_pass.env
+    restart: on-failure
 
   redis:
     image: redis:5.0.5-alpine
@@ -97,6 +104,7 @@ services:
       net.core.somaxconn: 1024
     env_file:
       - ./docker_config/db_pass.env
+    restart: on-failure
 
   mongo:
     image: mongo:4
@@ -104,6 +112,7 @@ services:
       - ./docker_volumes/mongodb:/data/db
     env_file:
       - ./docker_config/db_pass.env
+    restart: on-failure
     pids_limit: 100
     cpus: 0.5
     mem_limit: 500M
