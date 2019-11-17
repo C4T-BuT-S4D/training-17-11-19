@@ -69,10 +69,13 @@ def check(host):
     f2 = False
 
     for u in l:
-        if u.get('name') == u1:
-            f1 = True
-        if u.get('name') == u2:
-            f2 = True
+        try:
+            if u.get('name') == u1:
+                f1 = True
+            if u.get('name') == u2:
+                f2 = True
+        except:
+            cquit(Status.MUMBLE, 'Could not find user on user listing')
 
     if not f1 or not f2:
         cquit(Status.MUMBLE, 'Could not find user on user listing')
