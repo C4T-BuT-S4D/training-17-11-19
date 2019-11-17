@@ -1,6 +1,5 @@
 <template>
   <div id="listAnime">
-    <div>List component (@jnovikov)</div>
     <h5>Our Anime DB:</h5>
     <b-form-input v-model="titleFilter" placeholder="Boku no"></b-form-input>
     <b-form-input
