@@ -37,7 +37,6 @@ export default {
       }
       await this.loadFrames(start, end);
       await this.parseFrames(start, end);
-      console.log(this.parsedFrames);
       return true;
     },
 
