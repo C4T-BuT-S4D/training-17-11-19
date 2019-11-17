@@ -5,8 +5,9 @@ from random import randint
 from time import sleep
 import random
 from anidb_lib import *
+import os
 
-random_titles = open('titles.txt').readlines()
+random_titles = open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'titles.txt')).readlines()
 
 
 def random_title():
@@ -56,7 +57,10 @@ def get(host, flag_id, flag, _vuln):
 
     res = mch.get_anime_detail(s1, ani_id)
 
-    links = [x.get('content') for x in res['links']]
+    try:
+        links = [x.get('content') for x in res['links']]
+    except:
+        cquit(Status.CORRUPT, 'Invalid links')
 
     if flag not in links:
         cquit(Status.CORRUPT, 'Failed to find anime link')
@@ -119,7 +123,10 @@ def check(host):
     mch.add_links(s2, u2_ani_id, u2_link)
 
     # User2 get's user1 public link
-    links = [x.get('content') for x in mch.get_links(s2, u1_ani_id)]
+    try:
+        links = [x.get('content') for x in mch.get_links(s2, u1_ani_id)]
+    except:
+        cquit(Status.MUMBLE, 'Invalid links')
 
     assert_in(u1_link, links, 'Failed to get public link')
 
@@ -128,7 +135,10 @@ def check(host):
 
     mch.get_access(s1, u2_ani_id, u2_token)
 
-    links = [x.get('content') for x in mch.get_links(s1, u2_ani_id)]
+    try:
+        links = [x.get('content') for x in mch.get_links(s1, u2_ani_id)]
+    except:
+        cquit(Status.MUMBLE, 'Invalid links')
 
     assert_in(u2_link, links, 'Failed to get private links by token')
 
