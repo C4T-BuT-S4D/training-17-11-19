@@ -51,7 +51,7 @@ class AnimeService
 
     public function addAnimeLink($animeId, $link)
     {
-        return DB::table(self::animeTable)->insert(
+        return DB::table(self::animeLinks)->insert(
             [
                 'anime_id' => $animeId,
                 'content' => $link,
@@ -92,9 +92,8 @@ class AnimeService
 
     public function getAnimeDetails($animeId, $userId)
     {
-
         $anime = $this->getAnimeById($animeId);
-        if (!$anime) {
+        if ($anime == null) {
             return null;
         }
 
@@ -114,8 +113,9 @@ class AnimeService
     public function getMyAnime($userId)
     {
         return DB::table(self::animeTable)
-            ->join(self::animeAccess, self::animeTable . 'id', '=', self::animeAccess . "anime_id")
-            ->where(self::animeTable . 'owner_id', $userId)->orWhere(self::animeAccess . "user_id", $userId)->get();
+            ->leftJoin(self::animeAccess, 'anime.id', '=', 'anime_access.anime_id')
+            ->where('anime.owner_id', $userId)->orWhere('anime_access.user_id', $userId)
+            ->select('anime.*')->get();
     }
 
     public function tryGetAnimeAccess($animeId, $token)

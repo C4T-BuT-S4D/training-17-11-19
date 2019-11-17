@@ -52,7 +52,7 @@ class AnimeController extends Controller
             return response()->json(["error" => 'not found'], 404);
         }
 
-        if ($anime['author_id'] != $user->id) {
+        if ($anime->owner_id != $user->id) {
             return response()->json(["error" => 'Unauthorized'], 403);
         }
 
@@ -89,7 +89,7 @@ class AnimeController extends Controller
 
     public function detailsAnime(Request $request, $animeId)
     {
-        $details = $this->animeService->getAnimeDetails($request->user()->id, $animeId);
+        $details = $this->animeService->getAnimeDetails($animeId, $request->user()->id);
         if ($details) {
             return response()->json(["result" => $details]);
         }
