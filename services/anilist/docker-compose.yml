@@ -1,4 +1,4 @@
-version: '2.4'
+version: '2.2'
 
 volumes:
   front_build:
@@ -11,6 +11,9 @@ services:
     env_file:
       - ./docker_config/db_pass.env
       - ./docker_config/authentication/env.env
+    pids_limit: 100
+    cpus: 0.25
+    mem_limit: 500M
 
   player_internal:
     build:
@@ -19,6 +22,9 @@ services:
     restart: on-failure
     volumes:
       - ./docker_volumes/anime:/anime
+    pids_limit: 100
+    cpus: 0.50
+    mem_limit: 500M
 
   player_api:
     build:
@@ -28,6 +34,9 @@ services:
       - ./docker_config/db_pass.env
     volumes:
       - ./docker_volumes/anime:/anime:ro
+    pids_limit: 100
+    cpus: 0.50
+    mem_limit: 500M
 
   chat:
     build:
@@ -36,6 +45,9 @@ services:
     env_file:
       - ./docker_config/chat/env.env
       - ./docker_config/db_pass.env
+    pids_limit: 100
+    cpus: 0.25
+    mem_limit: 500M
 
   anidb:
     build:
@@ -47,6 +59,9 @@ services:
       - ./docker_config/db_pass.env
     volumes:
       - ./docker_volumes/anidb:/db
+    pids_limit: 100
+    cpus: 0.25
+    mem_limit: 500M
 
 
   nginx:
@@ -57,6 +72,9 @@ services:
       - front_build:/front_build:ro
     ports:
       - "8000:80"
+    pids_limit: 100
+    cpus: 0.50
+    mem_limit: 200M
 
   front:
     build:
@@ -86,3 +104,6 @@ services:
       - ./docker_volumes/mongodb:/data/db
     env_file:
       - ./docker_config/db_pass.env
+    pids_limit: 100
+    cpus: 0.5
+    mem_limit: 500M
