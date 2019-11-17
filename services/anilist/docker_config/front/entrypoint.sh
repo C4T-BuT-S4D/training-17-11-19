@@ -3,4 +3,6 @@
 set -e
 cd /app
 yarn install
-yarn serve --port 3000
+yarn build
+rm -rf /front_build/*
+cp -r dist/* /front_build

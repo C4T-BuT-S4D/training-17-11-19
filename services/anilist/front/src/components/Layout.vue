@@ -23,8 +23,9 @@
             variant="success"
             type="submit"
             class="mr-2"
+            @click="$router.push({ name: 'uploads' })"
             v-else
-            >{{ $store.state.user.name }}</b-button
+            >My uploads ({{ $store.state.user.name }})</b-button
           >
           <b-button
             size="sm"

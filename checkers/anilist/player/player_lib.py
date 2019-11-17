@@ -2,6 +2,7 @@ import base64
 import binascii
 import gzip
 import os
+import random
 import struct
 
 from checklib import *
@@ -105,11 +106,12 @@ class CheckMachine:
         return data
 
     def upload_frames(self, sess, name, frames):
+        chunk_size = random.randint(10, 20)
         blocks = [
             list(map(
                 lambda x: base64.b64encode(x).decode(),
-                frames[i:i + 10],
-            )) for i in range(0, len(frames), 10)
+                frames[i:i + chunk_size],
+            )) for i in range(0, len(frames), chunk_size)
         ]
 
         token = self.get_upload_token(sess, name)
@@ -119,17 +121,18 @@ class CheckMachine:
                 json={
                     'token': token,
                     'frames': block,
-                    'start': i * 10,
+                    'start': i * chunk_size,
                 })
             check_response(r, 'Could not upload anime chunk')
 
         return token
 
     def get_frames(self, sess, token, start, end):
+        chunk_size = random.randint(20, 30)
         frames = []
-        for i in range(start, end + 1, 30):
+        for i in range(start, end + 1, chunk_size):
             cur_start = i
-            cur_end = min(end, i + 29)
+            cur_end = min(end, i + chunk_size - 1)
             r = sess.get(
                 f'{self.url}/player/get_chunk/',
                 params={
@@ -153,9 +156,10 @@ class CheckMachine:
         return frames
 
     def parse_frames(self, sess, frames):
+        chunk_size = random.randint(20, 30)
         result = []
-        for i in range(0, len(frames), 30):
-            block = frames[i:i + 30]
+        for i in range(0, len(frames), chunk_size):
+            block = frames[i:i + chunk_size]
             r = sess.post(
                 f'{self.url}/player/parse_chunk/',
                 json={

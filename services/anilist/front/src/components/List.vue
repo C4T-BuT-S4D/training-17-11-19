@@ -28,12 +28,12 @@
     </div>
 
     <!--<b-button-->
-      <!--size="sm"-->
-      <!--variant="danger"-->
-      <!--type="submit"-->
-      <!--:anime="anime"-->
-      <!--@click="$router.push(getAnimeUrl(anime.token))"-->
-      <!--&gt;WATCH ANIME</b-button-->
+    <!--size="sm"-->
+    <!--variant="danger"-->
+    <!--type="submit"-->
+    <!--:anime="anime"-->
+    <!--@click="$router.push(getAnimeUrl(anime.token))"-->
+    <!--&gt;WATCH ANIME</b-button-->
     <!--&gt;-->
   </div>
 </template>
@@ -59,9 +59,3 @@ export default {
   }
 };
 </script>
-
-<style scoped>
-#list {
-  border: 1px solid #ff0000;
-}
-</style>

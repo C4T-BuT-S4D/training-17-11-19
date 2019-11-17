@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-import random
 import string
 import sys
 
@@ -23,7 +22,7 @@ def put(host, _flag_id, flag, vuln):
         anime_name = flag
         frames = list(map(
             mch.load_local_letter,
-            rnd_string(length=40, alphabet=string.ascii_letters + string.digits),
+            rnd_string(length=20, alphabet=string.ascii_letters + string.digits),
         ))
         token = mch.upload_frames(sess, anime_name, frames)
 

@@ -108,7 +108,6 @@ export default {
         let {
           data: { token }
         } = response;
-        console.log(token);
         for (let i = 0; i < frames.length; i += 30) {
           let chunk = frames.slice(i, i + 30);
           await this.$http.post("/player/upload_chunk/", {

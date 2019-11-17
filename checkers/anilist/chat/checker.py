@@ -79,7 +79,7 @@ def check(host):
 
     messages = []
 
-    for i in range(10):
+    for i in range(5):
         c = randint(1, 2)
         if c == 1:
             sender_s = s1
