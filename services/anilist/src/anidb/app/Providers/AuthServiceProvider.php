@@ -33,11 +33,12 @@ class AuthServiceProvider extends ServiceProvider
         // the User instance via an API token or any other method necessary.
 
         $this->app['auth']->viaRequest('api', function ($request) {
+
             $sessionId = $request->cookie('session');
-            if ($sessionId) {
+            if ($sessionId && $sessionId != '') {
                 $sessionUser = $this->app['redis']->get($sessionId);
                 $user = json_decode($sessionUser, true);
-                if ($user) {
+                if ($user && $user['id']) {
                     return new GenericUser(['id' => $user['id'], 'name' => $user['name']]);
                 }
             }
