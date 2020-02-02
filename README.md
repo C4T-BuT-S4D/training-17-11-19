@@ -1,35 +1,36 @@
-# Attack-Defence тренировка от C4T BuT S4D
+# Attack-Defence training by C4T BuT S4D
 
-Исходные коды сервисов, чекеры и сплоиты с тренировки 17 ноября 2019.
-
-
-## Результаты
-
-![Топ скорборда](scoreboard/top.png)
-
-[Полный финальный скорборд](scoreboard/full.png)
+Sources of services, checkers and sploits from 17th November 2019 training.
 
 
-## Сервисы
+## Results
 
-| Сервис | Язык | Чекер | Сплоиты | Автор |
+![Top](scoreboard/top.png)
+
+[Full scoreboard](scoreboard/full.png)
+
+
+## Services
+
+| Service | Lang | Checker | Sploits | Author |
 |--------|------|-------|---------|-------|
-| **[player](services/anilist/src/player/)** | Python, C | [Чекер](checkers/anilist/player/) | [Сплоиты](sploits/anilist/player/) | [@pomo_mondreganto](https://github.com/pomo-mondreganto) |
-| **[chat](services/anilist/src/chat/)** | NodeJS | [Чекер](checkers/anilist/chat/) | [Сплоиты](sploits/anilist/chat/) | [@kekov](https://github.com/xmikasax) |
-| **[anidb](services/anilist/src/anidb/)** | PHP | [Чекер](checkers/anilist/anidb/) | [Сплоиты](sploits/anilist/anidb/) | [@jnovikov](https://github.com/jnovikov) |
+| **[player](services/anilist/src/player/)** | Python, C | [Checker](checkers/anilist/player/) | [Sploits](sploits/anilist/player/) | [@pomo_mondreganto](https://github.com/pomo-mondreganto) |
+| **[chat](services/anilist/src/chat/)** | NodeJS | [Checker](checkers/anilist/chat/) | [Sploits](sploits/anilist/chat/) | [@kekov](https://github.com/xmikasax) |
+| **[anidb](services/anilist/src/anidb/)** | PHP | [Checker](checkers/anilist/anidb/) | [Sploits](sploits/anilist/anidb/) | [@jnovikov](https://github.com/jnovikov) |
 
 
-## Образ
+## Image
 
 - Ubuntu 18.04.1 LTS
 - Alpine in Docker
 
 
-## Инфраструктура
+## Infrastructure
 
 - DevOps: author [@pomo_mondreganto](https://github.com/pomo-mondreganto)
-- Проверяющая система: [ForcAD](https://github.com/pomo-mondreganto/ForcAD)
+- Checksystem: [ForcAD](https://github.com/pomo-mondreganto/ForcAD)
 
 
-## Разбор
-Приближается...
+## Writeups
+
+Coming...
